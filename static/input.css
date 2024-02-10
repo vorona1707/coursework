@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.fruits-bg{
+    background-image: url(../images/Banner.jpg);
+  }
+
+.fruits-after-bg{
+  background-image: url(../images/fruit.png);
+}
+
+.fruits-after-bg-2{
+  background-image: url(../images/fruit2.png);
+}
