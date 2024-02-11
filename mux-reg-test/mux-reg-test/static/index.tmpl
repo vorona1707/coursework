@@ -1,0 +1,27 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>website name</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/logo.png" />
+</head>
+
+<body class="page-transition">
+  <form action="/create_post" method="POST">
+    <input type="text" name="title" placeholder="Название" />
+    <input type="text" name="content" placeholder="Текст" />
+    <button type="submit">Сохранить</button>
+  </form>
+
+  {{ range . }}
+  <div style="border: 1px solid red; display: flex; flex-direction: column">
+    <strong>{{ .Title }}</strong>
+    {{ .Content }}
+  </div>
+  {{ end }}
+
+</body>
+
+</html>

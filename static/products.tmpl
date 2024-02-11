@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/create_product" method="POST">
+        <input type="text" name="name" placeholder="Название товара"/>
+        <input type="number" name="price" placeholder="Цена"/>
+        <input type="number" name="weight" placeholder="Вес"/>
+        <input type="string" name="description" placeholder="Описание"/>
+        <input type="string" name="size" placeholder="Размер">
+        <button type="submit">Сохранить</button>
+    </form>
+
+    {{ range . }}
+        <p>Название: {{ .Name }} крутой</p>
+        <p>Цена: {{ .Price }} ¥</p>
+        <p>Вес: {{ .Weight }} т/кг</p>
+        <p>Описание епта: {{ .Description }}</p>
+        <p>Размер: {{ .Size }}</p>
+    {{ end }}
+
+
+</body>
+</html>
