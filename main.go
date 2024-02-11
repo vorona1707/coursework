@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+
+	//"strconv"
 	"text/template"
 
 	"github.com/gorilla/mux"
@@ -12,14 +14,14 @@ import (
 	"gorm.io/gorm"
 )
 
-type Product struct {
+type User struct {
 	gorm.Model
 
-	Name        string
-	Price       int
-	Weight      int
-	Description string
-	Size        string
+	ID       uint
+	Name     string
+	Surname  string
+	Password string
+	Email    string
 }
 
 func main() {
@@ -32,27 +34,27 @@ func main() {
 		return
 	}
 
-	err = db.AutoMigrate(&Product{})
+	err = db.AutoMigrate(&User{})
 	if err != nil {
 		fmt.Printf("Error migrating database: %v\n", err)
 		return
 	}
 
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("static/products.tmpl")
+	mux.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("static/reg.tmpl")
 		if err != nil {
 			fmt.Printf("Error parsing template: %v\n", err)
 			return
 		}
 
-		var products []*Product
-		err = db.Find(&products).Error
+		var users []*User
+		err = db.Find(&users).Error
 		if err != nil {
 			fmt.Printf("Говно вопрос: %v\n", err)
 			return
 		}
 
-		err = tmpl.Execute(w, products)
+		err = tmpl.Execute(w, users)
 		if err != nil {
 			fmt.Printf("Error executing template: %v\n", err)
 			return
@@ -60,7 +62,9 @@ func main() {
 		}
 	})
 
-	mux.HandleFunc("/create_product", func(w http.ResponseWriter, r *http.Request) {
+	mux.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
+	mux.HandleFunc("/reg", func(w http.ResponseWriter, r *http.Request) {
 
 		err := r.ParseForm()
 		if err != nil {
@@ -69,53 +73,100 @@ func main() {
 		}
 
 		name := r.FormValue("name")
-		price := r.FormValue("price")
-		weight := r.FormValue("weight")
-		description := r.FormValue("description")
-		size := r.FormValue("size")
+		surname := r.FormValue("surname")
+		password := r.FormValue("password")
+		email := r.FormValue("email")
+		//weight := r.FormValue("weight")
+		//description := r.FormValue("description")
+		//size := r.FormValue("size")
 
 		if name == "" {
-			fmt.Printf("ты что наделал сука \n")
+			fmt.Printf("ошибка имени \n")
 			return
 		}
 
-		if description == "" {
-			fmt.Printf("ты что наделал сука \n")
+		if surname == "" {
+			fmt.Printf("ошибка фамилии \n")
 			return
 		}
 
-		if size == "" {
-			fmt.Printf("ты что наделал сука \n")
+		if email == "" {
+			fmt.Printf("ошибка email \n")
 			return
 		}
 
-		price_int, err := strconv.Atoi(price)
-		if err != nil {
-			fmt.Printf("говно ситуация \n")
-			return
+		//price_int, err := strconv.Atoi(price)
+
+		//weight_int, err := strconv.Atoi(weight)
+		//if err != nil {
+		//	fmt.Printf("говно конечно \n")
+		//	return
+		//}
+
+		user := &User{
+			Name:     name,
+			Surname:  surname,
+			Password: password,
+			Email:    email,
 		}
 
-		weight_int, err := strconv.Atoi(weight)
-		if err != nil {
-			fmt.Printf("говно конечно \n")
-			return
-		}
-
-		product := &Product{
-			Name:        name,
-			Price:       price_int,
-			Weight:      weight_int,
-			Description: description,
-			Size:        size,
-		}
-
-		err = db.Create(product).Error
+		err = db.Create(user).Error
 		if err != nil {
 			fmt.Printf("Ошибка \n")
 			return
 		}
+		http.Redirect(w, r, "/register", http.StatusFound)
 
-		http.Redirect(w, r, "/", http.StatusFound)
+	})
+
+	mux.HandleFunc("/deleteform", func(w http.ResponseWriter, r *http.Request) {
+
+		tmpl, err := template.ParseFiles("static/deldb.tmpl")
+		if err != nil {
+			fmt.Printf("Error parsing template: %v\n", err)
+			return
+		}
+
+		var users []*User
+
+		err = db.Find(&users).Error
+		if err != nil {
+			fmt.Printf("Говно вопрос: %v\n", err)
+			return
+		}
+
+		err = tmpl.Execute(w, users)
+		if err != nil {
+			fmt.Printf("Error executing template: %v\n", err)
+			return
+		}
+	})
+
+	mux.HandleFunc("/delid", func(w http.ResponseWriter, r *http.Request) {
+
+		err := r.ParseForm()
+		if err != nil {
+			fmt.Printf("Ошибка формы: %v\n", err)
+			return
+		}
+
+		var users []*User
+
+		err = db.Find(&users).Error
+		if err != nil {
+			fmt.Printf("Говно вопрос: %v\n", err)
+			return
+		}
+
+		deleteid := r.FormValue("deleteid")
+		deleteid_int, err := strconv.Atoi(deleteid)
+
+		err = db.Delete(&User{}, deleteid_int).Error
+		if err != nil {
+			fmt.Printf("Ошибка удаления \n")
+			return
+		}
+		http.Redirect(w, r, "/deleteform", http.StatusFound)
 	})
 
 	err = http.ListenAndServe(":8080", mux)

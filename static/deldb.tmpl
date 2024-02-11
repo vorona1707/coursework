@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/delid" method="POST">
+        <input type="number" name="deleteid" placeholder="id на удалкение">
+        <button type="submit">удалить</button>
+    </form>
+
+    {{ range . }}
+      <p>Имя: {{.Name}}</p>
+      <p>Фамилия: {{.Surname}}</p>
+      <p>Пароль: {{.Password}}</p>
+      <p>Email: {{.Email}}</p>
+    {{ end }}
+
+</body>
+</html>
