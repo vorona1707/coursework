@@ -168,12 +168,26 @@ func main() {
 		fmt.Printf("%+v \n", users)
 
 		err = tmpl.Execute(w, users)
+
 		if err != nil {
 			fmt.Printf("Error executing template: %v\n", err)
 			return
 		}
 
 	})
+  
+  	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request{
+    
+    err := template.ParseFiles("static/index.tmpl")
+    if err != nil {
+      fmt.Printf("Error parsing template \n", err)
+      return
+    }
+
+	
+
+  })
+
 
 	router.HandleFunc("/users/{id}/delete", func(w http.ResponseWriter, r *http.Request) {
 

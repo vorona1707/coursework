@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="/static/output.css" rel="stylesheet"> 
 </head>
 <body>
     {{ range . }}
         <form action="/users/{{.ID}}/edit" method="POST">
-            <div class=""> 
+            <div class="flex w-screen h-screen m-10> 
                 <p>Имя</p>
                 <input type="text" name="name" value="{{ .Name}}">
                 <p>Фамилия</p>
