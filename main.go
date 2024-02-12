@@ -175,19 +175,6 @@ func main() {
 		}
 
 	})
-  
-  	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request{
-    
-    err := template.ParseFiles("static/index.tmpl")
-    if err != nil {
-      fmt.Printf("Error parsing template \n", err)
-      return
-    }
-
-	
-
-  })
-
 
 	router.HandleFunc("/users/{id}/delete", func(w http.ResponseWriter, r *http.Request) {
 
@@ -215,6 +202,23 @@ func main() {
 		}
 
 		http.Redirect(w, r, "/deleteform", http.StatusFound)
+	})
+
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+
+		tmpl, err := template.ParseFiles("static/index.tmpl")
+		template.ParseFiles("static/output.css")
+		if err != nil {
+			fmt.Printf("Error parsing template: %v\n", err)
+			return
+		}
+
+		err = tmpl.Execute(w, nil)
+		if err != nil {
+			fmt.Printf("Error executing template: %v\n", err)
+			return
+		}
+
 	})
 
 	router.HandleFunc("/users/{id}/edit", func(w http.ResponseWriter, r *http.Request) {
@@ -261,6 +265,20 @@ func main() {
 		}
 
 		http.Redirect(w, r, "/edit", http.StatusFound)
+	})
+
+	router.HandleFunc("/signin", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("static/signin.tmpl")
+		if err != nil {
+			fmt.Printf("Parsing error")
+			return
+		}
+
+		err = tmpl.Execute(w, nil)
+		if err != nil {
+			fmt.Printf("Error executing template: %v\n", err)
+			return
+		}
 	})
 
 	router.HandleFunc("/profile/{id}", func(w http.ResponseWriter, r *http.Request) {

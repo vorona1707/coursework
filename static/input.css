@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 .fruits-bg{
-    background-image: url(../images/Banner.jpg);
+    background-image: url(/static/images/Banner.jpg);
   }
 
 .fruits-after-bg{
-  background-image: url(../images/fruit.png);
+  background-image: url(/static/images/fruit.png);
 }
 
 .fruits-after-bg-2{
-  background-image: url(../images/fruit2.png);
+  background-image: url(/static/images/fruit2.png);
 }
 
 .fruits-bg{
-  background-image: url(../images/banner.jpg);
+  background-image: url(/static/images/banner.jpg);
 }
