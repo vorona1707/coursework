@@ -17,3 +17,8 @@
 .fruits-bg{
   background-image: url(/static/images/banner.jpg);
 }
+
+.shop-bg{
+  background-image: url(/static/images/shop-bg.png);
+
+}

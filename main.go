@@ -281,6 +281,20 @@ func main() {
 		}
 	})
 
+	router.HandleFunc("/catalog", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("static/catalog.tmpl")
+		if err != nil {
+			fmt.Printf("Parsing error")
+			return
+		}
+
+		err = tmpl.Execute(w, nil)
+		if err != nil {
+			fmt.Printf("Error executing template %v\n", err)
+			return
+		}
+	})
+
 	router.HandleFunc("/profile/{id}", func(w http.ResponseWriter, r *http.Request) {
 
 		tmpl, err := template.ParseFiles("static/profile.tmpl")

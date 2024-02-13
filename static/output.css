@@ -625,14 +625,6 @@ video {
   margin-top: 2rem;
 }
 
-.mr-2 {
-  margin-right: 0.5rem;
-}
-
-.mr-1 {
-  margin-right: 0.25rem;
-}
-
 .flex {
   display: flex;
 }
@@ -681,6 +673,10 @@ video {
   height: 500px;
 }
 
+.h-\[550px\] {
+  height: 550px;
+}
+
 .h-\[560px\] {
   height: 560px;
 }
@@ -695,10 +691,6 @@ video {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[550px\] {
-  height: 550px;
 }
 
 .w-1\/2 {
@@ -749,24 +741,20 @@ video {
   width: 40%;
 }
 
-.w-full {
-  width: 100%;
-}
-
-.w-screen {
-  width: 100vw;
-}
-
-.w-\[70\%\] {
-  width: 70%;
-}
-
 .w-\[80\%\] {
   width: 80%;
 }
 
 .w-\[90\%\] {
   width: 90%;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-screen {
+  width: 100vw;
 }
 
 .max-w-7xl {
@@ -911,6 +899,10 @@ video {
   padding-left: 2.5rem;
 }
 
+.pl-3 {
+  padding-left: 0.75rem;
+}
+
 .pl-4 {
   padding-left: 1rem;
 }
@@ -949,10 +941,6 @@ video {
 
 .pt-6 {
   padding-top: 1.5rem;
-}
-
-.pl-3 {
-  padding-left: 0.75rem;
 }
 
 .text-2xl {
@@ -996,6 +984,11 @@ video {
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
+.text-blue-950 {
+  --tw-text-opacity: 1;
+  color: rgb(23 37 84 / var(--tw-text-opacity));
+}
+
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -1031,31 +1024,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.text-blue-300 {
-  --tw-text-opacity: 1;
-  color: rgb(147 197 253 / var(--tw-text-opacity));
-}
-
-.text-blue-500 {
-  --tw-text-opacity: 1;
-  color: rgb(59 130 246 / var(--tw-text-opacity));
-}
-
-.text-blue-800 {
-  --tw-text-opacity: 1;
-  color: rgb(30 64 175 / var(--tw-text-opacity));
-}
-
-.text-yellow-400 {
-  --tw-text-opacity: 1;
-  color: rgb(250 204 21 / var(--tw-text-opacity));
-}
-
-.text-blue-950 {
-  --tw-text-opacity: 1;
-  color: rgb(23 37 84 / var(--tw-text-opacity));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -1074,4 +1042,8 @@ video {
 
 .fruits-bg{
   background-image: url(/static/images/banner.jpg);
+}
+
+.shop-bg{
+  background-image: url(/static/images/shop-bg.png);
 }

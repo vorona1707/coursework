@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/static/output.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="ml-auto mr-auto max-w-8xl h-[100vh]">
+        <div class="w-[90%] mx-auto h-36 flex flex-row">
+
+            <div class="w-[25%] h-full bg-white flex flex-row justify-center items-center">
+                <img src="/static/images/Logo.png" class="h-20 w-14">
+                <p class="pl-4 font-bold text-2xl">Organic</p>
+            </div>
+
+            <div class="w-[40%] flex flex-row font-medium text-xl m-auto px-10">
+                <div class="w-[100%] flex flex-row ">
+                    <p class="w-1/5">Home</p>
+                    <p class="w-1/5">Catalog</p>
+                    <p class="w-1/5">Pages</p>
+                    <p class="w-1/5">Projects</p>
+                    <p class="w-1/5">News {{ .Name }}</p>
+                </div>
+            </div>
+
+            <div class="w-[25%] h-full flex flex-row py-10">
+                <img src="/static/images/Group 7.png" class="h-14 w-14 mr-6 pl-0">
+                <img src="/static/images/Cart.png" class="h-14 w-32 mr-6">
+                <a id="signin_button" href="/signin"
+                    class="m-auto px-8 py-4 text-xl bg-yellow-200 rounded-2xl">Войти</a>
+            </div>
+        </div>
+
+
+        <div class="shop-bg w-full h-[550px] bg-no-repeat">
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
