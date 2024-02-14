@@ -19,25 +19,34 @@
 
             <div class="w-[40%] flex flex-row font-medium text-xl m-auto px-10">
                 <div class="w-[100%] flex flex-row ">
-                    <p class="w-1/5">Home</p>
-                    <p class="w-1/5">Catalog</p>
-                    <p class="w-1/5">Pages</p>
-                    <p class="w-1/5">Projects</p>
-                    <p class="w-1/5">News {{ .Name }}</p>
+                    <p class="w-1/5">Главная</p>
+                    <p class="w-1/5">Каталог</p>
+                    <p class="w-1/5">Страницы</p>
+                    <p class="w-1/5">Проекты</p>
+                    <p class="w-1/5">Новости {{ .Name }}</p>
                 </div>
             </div>
 
             <div class="w-[25%] h-full flex flex-row py-10">
                 <img src="/static/images/Group 7.png" class="h-14 w-14 mr-6 pl-0">
                 <img src="/static/images/Cart.png" class="h-14 w-32 mr-6">
-                <a id="signin_button" href="/signin"
-                    class="m-auto px-8 py-4 text-xl bg-yellow-200 rounded-2xl">Войти</a>
+                <div class="mt-3 mx-auto">
+                    <a id="signin_button" href="/signin"
+                        class="m-auto px-8 py-4 text-xl bg-yellow-200 rounded-2xl">Войти
+                    </a>
+                </div>
             </div>
         </div>
 
 
-        <div class="shop-bg w-full h-[550px] bg-no-repeat">
+        <div class="shop-bg w-screen h-[450px] bg-no-repeat flex">
+            <p class="flex text-4xl font-medium m-auto">Shop</p>
+        </div>
 
+
+        <div>
+            {{ range . }}
+            {{ end }}
         </div>
     </div>
 

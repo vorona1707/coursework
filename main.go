@@ -24,9 +24,22 @@ type User struct {
 	Email    string
 }
 
+type Product struct {
+	gorm.Model
+
+	ID          uint
+	Name        string
+	Price       int
+	Description string
+	//Image string
+
+}
+
 func main() {
 
 	router := mux.NewRouter()
+
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
 	db, err := gorm.Open(sqlite.Open("data.db"), &gorm.Config{})
 	if err != nil {
@@ -35,6 +48,12 @@ func main() {
 	}
 
 	err = db.AutoMigrate(&User{})
+	if err != nil {
+		fmt.Printf("Error migrating database: %v\n", err)
+		return
+	}
+
+	err = db.AutoMigrate(&Product{})
 	if err != nil {
 		fmt.Printf("Error migrating database: %v\n", err)
 		return
@@ -62,7 +81,64 @@ func main() {
 		}
 	})
 
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	router.HandleFunc("/products/add", func(w http.ResponseWriter, r *http.Request) {
+		tmpl, err := template.ParseFiles("static/add_products.tmpl")
+		if err != nil {
+			fmt.Printf("Error parsing tempate: %n\n", err)
+			return
+		}
+
+		var products []*Product
+		err = db.Find(&products).Error
+		if err != nil {
+			fmt.Printf("Ошибка поиска юзера: %v\n", err)
+			return
+		}
+
+		err = tmpl.Execute(w, products)
+		if err != nil {
+			fmt.Printf("Error executing template: %v\n", err)
+			return
+
+		}
+	})
+
+	router.HandleFunc("add/products", func(w http.ResponseWriter, r *http.Request) {
+
+		err := r.ParseForm()
+		if err != nil {
+			fmt.Printf("Ошибка формы: %v\n", err)
+			return
+		}
+
+		name := r.FormValue("name")
+		price := r.FormValue("price")
+		description := r.FormValue("description")
+
+		if name == "" {
+			fmt.Printf("ошибка имени товара \n")
+			return
+		}
+
+		if price == "" {
+			fmt.Printf("ошибка поля цена \n")
+			return
+		}
+
+		if description == "" {
+			fmt.Printf("ошибка поля описание \n")
+			return
+		}
+
+		price_int, err := strconv.Atoi(price)
+
+		product := &Product{
+			Name:        name,
+			Price:       price_int,
+			Description: description,
+		}
+
+	})
 
 	router.HandleFunc("/reg", func(w http.ResponseWriter, r *http.Request) {
 
@@ -314,7 +390,7 @@ func main() {
 
 		err = db.Find(&chelovek, idInt).Error
 		if err != nil {
-			fmt.Printf("Ошибка не найден человек")
+			fmt.Printf("Ошибка не найден юзер")
 		}
 
 		err = tmpl.Execute(w, chelovek)
