@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="/static/output.css" rel="stylesheet">
+    <link href="/static/output.css/" rel="stylesheet">
 </head>
 
 <body>
@@ -14,16 +14,16 @@
 
             <div class="w-[25%] h-full bg-white flex flex-row justify-center items-center">
                 <img src="/static/images/Logo.png" class="h-20 w-14">
-                <p class="pl-4 font-bold text-2xl">Organic</p>
+                <p class="pl-4 font-semibold text-2xl text-underline">Orgazmic</p>
             </div>
 
             <div class="w-[40%] flex flex-row font-medium text-xl m-auto px-10">
                 <div class="w-[100%] flex flex-row ">
-                    <p class="w-1/5">Главная</p>
-                    <p class="w-1/5">Каталог</p>
+                    <a class="w-1/5" href="/">Главная</a>
+                    <p class="w-1/5" href="/products/">Каталог</p>
                     <p class="w-1/5">Страницы</p>
                     <p class="w-1/5">Проекты</p>
-                    <p class="w-1/5">Новости {{ .Name }}</p>
+                    <p class="w-1/5">Новости</p>
                 </div>
             </div>
 
@@ -40,14 +40,50 @@
 
 
         <div class="shop-bg w-screen h-[450px] bg-no-repeat flex">
-            <p class="flex text-4xl font-medium m-auto">Shop</p>
+            <p class="flex text-4xl font-medium m-auto">Каталог</p>
+        </div>
+ 
+        <form class="flex w-[70%] mt-10 flex-row gap-4 mx-auto border-[3px] rounded-2xl border-green-300 py-10 px-10">
+          {{ range . }}
+            <div class="flex flex-col bg-yellow-100 rounded-xl py-10 w-full mx-auto">
+              <p class="m-auto">Имя товара: {{ .Name }}</p>
+              <p class="m-auto">Описание: {{ .Description }}</p>
+              <p class="m-auto">Цена: {{ .Price }}</p>
+              <button class=""></button>
+            </div>
+          {{ end }}
+        </form>
+
+         <div class="flex flex-row w-full h-[380px] mt-[100px]">
+            <div class="w-1/4 h-full bg-gray-0 flex flex-col items-end pr-6 pt-10">
+                <p class="text-3xl font-bold mb-8">Contact Us</p>
+                <p class="text-md text-gray-600">Email</p>
+                <p class="text-md text-gray-500 mb-6">dafadfa@gmail.com</p>
+                <p class="text-md text-gray-600">Phonel</p>
+                <p class="text-md text-gray-500 mb-6">8888888888</p>
+                <p class="text-md text-gray-600">Adress</p>
+                <p class="text-md text-gray-500">88 road brooklyn street</p>
+            </div>
+            <div class="w-2/4 h-full flex flex-col py-6 border-l-[2px] justify-center border-gray-300">
+                <div class="flex flex-row mx-auto">
+                    <img src="/static/images/Logo.png" class="h-24 w-16 mr-4">
+                    <p class="flex justify-center text-3xl pt-6 font-semibold">Organick</p>
+                </div>
+                <p class="text-xl text-gray-400 w-1/2 mx-auto pt-6">Simply dummy text of the printing and typesetting industry.
+                    Lorem Ipsum simply dummy text of the printing </p>
+            </div>
+
+            <div class="w-1/4 h-full border-l-[1px] border-gray-300 pl-4">
+                <p class="text-3xl font-bold pt-10 mb-4">Utility Pages</p>
+                <p class="mb-4 text-gray-600">Style Guide</p>
+                <p class="mb-4 text-gray-600">404 Not Found</p>
+                <p class="mb-4 text-gray-600">Password Protected</p>
+                <p class="mb-4 text-gray-600">Licences</p>
+                <p class="mb-4 text-gray-600">Changelog</p>
+            </div>
         </div>
 
 
-        <div>
-            {{ range . }}
-            {{ end }}
-        </div>
     </div>
 
 

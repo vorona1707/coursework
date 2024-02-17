@@ -81,7 +81,7 @@ func main() {
 		}
 	})
 
-	router.HandleFunc("/products/add", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/products/add/", func(w http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.ParseFiles("static/add_products.tmpl")
 		if err != nil {
 			fmt.Printf("Error parsing tempate: %n\n", err)
@@ -103,7 +103,8 @@ func main() {
 		}
 	})
 
-	router.HandleFunc("add/products", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/products/add/create", func(w http.ResponseWriter, r *http.Request) {
+    
 
 		err := r.ParseForm()
 		if err != nil {
@@ -136,8 +137,15 @@ func main() {
 			Name:        name,
 			Price:       price_int,
 			Description: description,
-		}
+    }
 
+    err = db.Create(product).Error
+    if err != nil {
+      fmt.Printf("db create product error %v \n",)
+      return
+    }
+
+    http.Redirect(w, r, "/products/add/", http.StatusFound)
 	})
 
 	router.HandleFunc("/reg", func(w http.ResponseWriter, r *http.Request) {
@@ -357,15 +365,24 @@ func main() {
 		}
 	})
 
-	router.HandleFunc("/catalog", func(w http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.ParseFiles("static/catalog.tmpl")
+	router.HandleFunc("/products/", func(w http.ResponseWriter, r *http.Request) {
+		
+    tmpl, err := template.ParseFiles("static/catalog.tmpl")
 		if err != nil {
 			fmt.Printf("Parsing error")
 			return
 		}
+    
+    var products []*Product
+    
 
-		err = tmpl.Execute(w, nil)
-		if err != nil {
+    err = db.Find(&products).Error
+    if err != nil {
+      fmt.Printf("Продукт не найден")
+    }
+
+		err = tmpl.Execute(w, products)
+    if err != nil {
 			fmt.Printf("Error executing template %v\n", err)
 			return
 		}

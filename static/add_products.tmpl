@@ -8,7 +8,7 @@
 </head>
 <body class="bg-gray-200">
 <div class="flex w-sreen h-screen m-auto">
-    <form action="/products/add" method="POST" class="flex flex-col bg-white w-2/6 h-[560px] m-auto rounded-xl pt-2 gap-4">
+    <form action="/products/add/create/" method="POST" class="flex flex-col bg-white w-2/6 h-[560px] m-auto rounded-xl pt-2 gap-4">
         <p class="mx-auto font-medium text-3xl pt-10">Добавить товар:</p>
         <input class="bg-gray-300 w-2/4 mx-auto rounded-md h-10 " type="text" name="name" placeholder="Название товара"/>
         <input class="bg-gray-300 w-2/4 mx-auto rounded-md h-10 " type="number" name="price" placeholder="Цена"/>
@@ -17,10 +17,15 @@
     </form>
 </div>
 
+<div class="flex flex-row m-auto">
     {{ range . }}
-        <p>Название: {{ .Name }} крутой</p>
-        <p>Цена: {{ .Price }} ¥</p>
-        <p>Описание: {{ .Description }}</p>
+        <div class="flex flex-col h-[500px] gap-8">
+          <p>Название: {{ .Name }} крутой</p>
+          <p>Цена: {{ .Price }} ¥</p>
+          <p>Описание: {{ .Description }}</p>
+        </div>
     {{ end }}
+  </div>
+</div>
 </body>
 </html>
