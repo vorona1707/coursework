@@ -1,0 +1,194 @@
+{{ define "catalog" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Органик</title>
+    <link href="/static/output.css" rel="stylesheet">
+    <script src="/static/index.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown-item {
+            transition: all 0.3s ease;
+        }
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+            transform: translateX(10px);
+        }
+        .product-card {
+            transition: transform 0.3s ease-in-out;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .category-container {
+            height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex flex-col items-center min-h-screen">
+        {{ template "header" . }}
+        
+        <!-- Catalog Image -->
+        <div id="catalog-fruit-bg" class="shop-bg w-full h-[450px] bg-cover bg-center bg-no-repeat flex justify-center items-center">
+            <p class="text-4xl font-bold text-white bg-black bg-opacity-50 px-4 py-2 rounded">Каталог</p>
+        </div>
+
+        <!-- Catalog Products -->
+        <div class="w-full flex flex-col lg:flex-row justify-center gap-4 mt-12 lg:mt-24 px-4 lg:px-10 mb-24">
+            <div id="square" class="fade-in flex flex-col w-full lg:w-1/5 text-lg md:text-2xl rounded-2xl border border-gray-200 p-6 md:p-10 gap-4 shadow-lg items-center bg-white category-container">
+                <div class="relative w-full" id="dropdownButton">
+                    <div id="button" onclick="toggleDropdown()" class="border-solid text-2xl rounded-xl shadow-md border-gray-300 bg-white w-full py-3 cursor-pointer font-semibold flex justify-between items-center px-4">
+                        Каталог
+                        <img width="10" src="/static/icon.svg" alt="Dropdown Icon">
+                    </div>
+
+                    <div id="dropdown" class="rounded-md shadow-lg border-gray-300 border top-16 bg-white w-full font-normal absolute flex-col hidden z-10">
+                        <div class="dropdown-item" data-url="/catalog/products/1">
+                            Фрукты
+                        </div>
+                        <div class="dropdown-item" data-url="/catalog/products/2">
+                            Овощи
+                        </div>
+                        <div class="dropdown-item" data-url="/catalog/products/3">
+                            Напитки
+                        </div>
+                        <div class="dropdown-item" data-url="/catalog/products/4">
+                            Каши
+                        </div>
+                        <div class="dropdown-item" data-url="/catalog/products/5">
+                            Разное
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="square2" class="fade-in grid w-full lg:w-4/5 border border-gray-200 p-6 md:p-10 gap-5 sm:grid-cols-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 shadow-lg rounded-2xl bg-white">
+                {{ range .Products }}
+                <div class="flex flex-col p-4 bg-white rounded-xl shadow-md transform transition-transform hover:scale-105 product-card">
+                    <img class="object-cover rounded-md h-40 w-full" src="/{{ .Image }}" alt="{{ .Name }}">
+                    <div class="flex flex-col mt-4 flex-grow">
+                        <p class="font-bold text-xl text-gray-900">{{ .Name }}</p>
+                        <p class="text-lg text-gray-600">{{ .Price }} ₽</p>
+                        <p class="mt-2 text-sm text-gray-500 flex-grow">{{ .Description }}</p>
+                    </div>
+                    <div class="mt-4">
+                        <form method="POST" action="/cart/add/" class="add-to-cart-form">
+                            <input type="hidden" name="product_id" value="{{ .ID }}">
+                            <input type="hidden" name="product_name" value="{{ .Name }}">
+                            <input type="hidden" name="redirect_url" value="{{ $.CurrentURL }}">
+                            <label for="quantity-{{ .ID }}" class="block text-sm font-medium text-gray-700">Количество:</label>
+                            <input type="number" id="quantity-{{ .ID }}" name="quantity" min="1" value="1" class="mt-1 block w-full text-center py-2 border border-gray-300 rounded-md shadow-sm focus:ring-cyan-700 focus:border-cyan-700 sm:text-sm">
+                            <button type="submit" class="mt-4 w-full text-center py-2 bg-cyan-700 hover:bg-cyan-800 text-white rounded-md transition-colors duration-300">
+                                Добавить в корзину
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {{ end }}
+            </div>
+        </div>
+
+        {{ template "footer" . }}
+
+        <!-- Element for displaying notifications -->
+        <div id="notifications" class="fixed top-10 left-1/2 transform -translate-x-1/2 space-y-2 z-50"></div>
+        
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            let dropdown = document.querySelector('#dropdownButton #dropdown');
+            dropdown.classList.toggle("hidden");
+        }
+
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                window.history.pushState({}, '', url);
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newProducts = doc.querySelector('#square2').innerHTML;
+                        document.querySelector('#square2').innerHTML = newProducts;
+                        attachFormEventListeners(); // Reattach form listeners after content update
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+
+        function attachFormEventListeners() {
+            document.querySelectorAll('.add-to-cart-form').forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent form submission
+                    const formData = new FormData(this);
+                    const productName = formData.get('product_name');
+                    const productID = formData.get('product_id');
+
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => {
+                        if (response.ok) {
+                            showNotification(productID, `Товар "${productName}" добавлен в корзину!`);
+                        } else {
+                            showNotification(productID, 'Ошибка добавления товара в корзину.', true);
+                        }
+                    }).catch(error => {
+                        console.error('Error:', error);
+                        showNotification(productID, 'Ошибка добавления товара в корзину.', true);
+                    });
+                });
+            });
+        }
+
+        function showNotification(productID, message, error = false) {
+            const notificationsContainer = document.getElementById('notifications');
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.className = `px-4 py-2 rounded shadow-lg ${error ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`;
+            notification.id = `notification-${productID}`;
+            notificationsContainer.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000); // Remove notification after 3 seconds
+        }
+
+        // Initial attachment of form event listeners
+        attachFormEventListeners();
+    </script>
+</body>
+</html>
+{{ end }}

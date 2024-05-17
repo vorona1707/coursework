@@ -1,0 +1,56 @@
+{{ define "admin_orders" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ-панель - Заказы</title>
+    <link href="/static/output.css" rel="stylesheet">
+</head>
+<body class="min-h-screen flex flex-col items-center">
+    {{ template "header" . }}
+
+    <section class="w-full flex flex-col items-center mt-8 min-h-screen">
+        <h1 class="text-2xl md:text-3xl font-bold mb-4">Управление заказами</h1>
+        <div class="w-11/12 md:w-3/4 lg:w-1/2 flex flex-col items-center gap-4">
+            {{ range .Orders }}
+            <div class="flex w-full p-4 bg-white rounded-lg shadow-md">
+                <div class="flex flex-col flex-grow ml-4">
+                    <h3 class="text-lg md:text-xl font-semibold">Заказ №{{ .Order.ID }}</h3>
+                    <p class="text-sm md:text-base text-gray-600">Пользователь: {{ .UserName }} ({{ .UserEmail }})</p>
+                    <p class="text-sm md:text-base text-gray-600">Статус: {{ .Order.Status }}</p>
+                    <p class="text-sm md:text-base text-gray-600">Общая стоимость: {{ printf "%.2f" .Order.TotalPrice }} ₽</p>
+                    <ul class="list-disc list-inside mt-2">
+                        {{ range .OrderItems }}
+                        <li>{{ .ProductName }} - {{ .Quantity }} шт. по {{ printf "%.2f" .UnitPrice }} ₽</li>
+                        {{ end }}
+                    </ul>
+                </div>
+                <button class="ml-4 h-14 my-auto px-4 py-2 bg-cyan-700 hover:bg-cyan-800 text-white rounded-md"
+                        data-id="{{ .Order.ID }}" onclick="editOrder(this.getAttribute('data-id'))">Изменить</button>
+                <button class="ml-4 h-14  my-auto  px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md"
+                        data-id="{{ .Order.ID }}" onclick="deleteOrder(this.getAttribute('data-id'))">Удалить</button>
+            </div>
+            {{ else }}
+            <p class="text-lg md:text-xl text-gray-600">Нет доступных заказов.</p>
+            {{ end }}
+        </div>
+    </section>
+
+    <script>
+        function editOrder(id) {
+            window.location.href = '/admin/orders/' + id + '/edit';
+        }
+
+        function deleteOrder(id) {
+            if (confirm('Вы уверены, что хотите удалить этот заказ?')) {
+                fetch('/admin/orders/' + id + '/delete', { method: 'POST' })
+                    .then(() => window.location.reload());
+            }
+        }
+    </script>
+
+    {{ template "footer" . }}
+
+</body>
+</html>
+{{ end }}

@@ -1,0 +1,41 @@
+{{ define "edit_user" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование пользователя</title>
+    <link href="/static/output.css" rel="stylesheet">
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center">
+    {{ template "header" . }}
+
+    <section class="w-full flex flex-col items-center mt-8">
+        <h1 class="text-2xl md:text-3xl font-bold mb-4">Редактирование пользователя</h1>
+        <form action="/admin/users/{{ .User.ID }}/update" method="POST" class="w-11/12 md:w-3/4 lg:w-1/2 flex flex-col items-center gap-4">
+            <input type="hidden" name="id" value="{{ .User.ID }}">
+            <label for="name" class="w-full text-sm md:text-base font-medium">Имя</label>
+            <input type="text" id="name" name="name" class="w-full p-2 rounded-md border" value="{{ .User.Name }}" required>
+
+            <label for="surname" class="w-full text-sm md:text-base font-medium">Фамилия</label>
+            <input type="text" id="surname" name="surname" class="w-full p-2 rounded-md border" value="{{ .User.Surname }}" required>
+
+            <label for="email" class="w-full text-sm md:text-base font-medium">Email</label>
+            <input type="email" id="email" name="email" class="w-full p-2 rounded-md border" value="{{ .User.Email }}" required>
+
+            <label for="password" class="w-full text-sm md:text-base font-medium">Пароль</label>
+            <input type="password" id="password" name="password" class="w-full p-2 rounded-md border" value="{{ .User.Password }}" required>
+
+            <label for="isAdmin" class="w-full text-sm md:text-base font-medium">Статус администратора</label>
+            <select id="isAdmin" name="isAdmin" class="w-full p-2 rounded-md border">
+                <option value="false" {{ if not .User.IsAdmin }}selected{{ end }}>Не администратор</option>
+                <option value="true" {{ if .User.IsAdmin }}selected{{ end }}>Администратор</option>
+            </select>
+
+            <button type="submit" class="mt-4 px-6 py-2 bg-cyan-700 hover:bg-cyan-800 text-white rounded-md">Сохранить</button>
+        </form>
+    </section>
+
+    {{ template "footer" . }}
+</body>
+</html>
+{{ end }}

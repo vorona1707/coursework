@@ -1,0 +1,63 @@
+{{ define "articles_list" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Органик</title>
+    <link href="/static/output.css" rel="stylesheet">
+    <script src="/static/index.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden; /* Скрытие горизонтальной полосы прокрутки */
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .article-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .article-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-100 items-center">
+
+    {{ template "header" . }}
+
+    <main class="flex-grow flex flex-col items-center w-full">
+        <section class="w-full flex flex-col items-center mt-8 px-4">
+            <h1 class="text-2xl md:text-3xl font-bold mb-4">Наши статьи</h1>
+            <div class="w-full max-w-4xl flex flex-col items-center gap-6 px-4">
+                {{ range .Articles }}
+                <div class="flex w-full p-4 bg-white rounded-lg shadow-md article-card fade-in overflow-hidden">
+                    <div class="flex flex-col flex-grow ml-4">
+                        <a href="/articles/{{ .ID }}" class="text-lg md:text-xl font-semibold text-cyan-700 hover:underline">{{ .Title }}</a>
+                        <p class="text-sm md:text-base text-gray-600 mt-2">{{ .Content | truncate 150 }}</p>
+                        <p class="text-xs md:text-sm text-gray-500 mt-2">Автор: {{ .Author }} | Опубликовано: {{ .PublishedAt.Format "02 Jan 2006" }}</p>
+                    </div>
+                </div>
+                {{ else }}
+                <p class="text-lg md:text-xl text-gray-600">Нет доступных статей.</p>
+                {{ end }}
+            </div>
+        </section>
+    </main>
+    {{ template "footer" . }}
+</body>
+</html>
+{{ end }}

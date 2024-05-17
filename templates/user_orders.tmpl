@@ -1,0 +1,36 @@
+{{ define "user_orders" }}
+<div class="space-y-8">
+    {{ range . }}
+    <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-bold">Заказ #{{ .ID }}</h2>
+            <span class="px-4 py-2 text-sm font-medium rounded-md 
+                {{ if eq .Status "Создан" }}bg-yellow-200 text-yellow-800
+                {{ else if eq .Status "В обработке" }}bg-blue-200 text-blue-800
+                {{ else if eq .Status "Доставлен" }}bg-green-200 text-green-800
+                {{ else if eq .Status "Отменен" }}bg-red-200 text-red-800
+                {{ else }}bg-gray-200 text-gray-800{{ end }}">
+                {{ .Status }}
+            </span>
+        </div>
+        <p class="text-lg mb-2"><span class="font-semibold">Общая стоимость:</span> {{ printf "%.2f" .TotalPrice }} ₽</p>
+        <p class="text-lg mb-4"><span class="font-semibold">Дата заказа:</span> {{ .CreatedAt.Format "02 Jan 2006 15:04" }}</p>
+        <div class="space-y-4">
+            {{ range .OrderItems }}
+            <div class="flex justify-between items-center p-4 bg-gray-50 rounded-md shadow-inner">
+                <div>
+                    <p class="text-lg font-semibold">{{ .ProductName }}</p>
+                    <p class="text-gray-600">Количество: {{ .Quantity }}</p>
+                </div>
+                <div>
+                    <p class="text-lg">{{ printf "%.2f" .UnitPrice }} ₽</p>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    {{ else }}
+    <p class="text-lg text-gray-600">У вас нет активных заказов.</p>
+    {{ end }}
+</div>
+{{ end }}

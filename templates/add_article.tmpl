@@ -1,0 +1,34 @@
+{{ define "add_article" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление статьи</title>
+    <link href="/static/output.css" rel="stylesheet">
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center">
+    {{ template "header" . }}
+
+    <section class="w-full flex flex-col items-center mt-8">
+        <h1 class="text-2xl md:text-3xl font-bold mb-4">Добавление новой статьи</h1>
+        <form action="/admin/articles/add" method="POST" class="w-11/12 md:w-3/4 lg:w-1/2 flex flex-col items-center gap-4">
+            <label for="title" class="w-full text-sm md:text-base font-medium">Заголовок</label>
+            <input type="text" id="title" name="title" class="w-full p-2 rounded-md border" required>
+
+            <label for="content" class="w-full text-sm md:text-base font-medium">Содержание</label>
+            <textarea id="content" name="content" class="w-full p-2 rounded-md border" rows="10" required></textarea>
+
+            <label for="author" class="w-full text-sm md:text-base font-medium">Автор</label>
+            <input type="text" id="author" name="author" class="w-full p-2 rounded-md border" required>
+
+            <label for="published_at" class="w-full text-sm md:text-base font-medium">Дата публикации</label>
+            <input type="datetime-local" id="published_at" name="published_at" class="w-full p-2 rounded-md border" required>
+
+            <button type="submit" class="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">Опубликовать</button>
+        </form>
+    </section>
+
+    {{ template "footer" . }}
+</body>
+</html>
+{{ end }}

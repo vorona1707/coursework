@@ -1,0 +1,89 @@
+{{ define "user_cart" }}
+<main class="w-full flex flex-col items-center mx-auto">
+    <h2 class="text-xl md:text-2xl font-semibold md:pr-[80%] pr-0 mb-6">Ваша корзина</h2>
+    <div class="w-full flex flex-col items-center gap-4">
+
+        {{ if .Products }}
+        {{ range .Products }}
+        <div id="product-{{ .Product.ID }}" class="flex w-full p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-100 hover:shadow-lg">
+            <div class="flex-shrink-0">
+                <img src="/{{ .Product.Image }}" class="h-24 w-24 rounded-lg object-cover">
+            </div>
+            <div class="flex flex-col flex-grow ml-4">
+                <h3 class="text-lg md:text-xl font-semibold">{{ .Product.Name }}</h3>
+                <p class="text-sm md:text-base text-gray-600">{{ .Product.Description }}</p>
+                <p class="text-lg md:text-xl font-bold mt-auto">{{ printf "%.2f" .SubTotal }} ₽</p>
+                <p class="text-sm md:text-base">Количество: {{ .Quantity }}</p>
+            </div>
+            <button class="ml-4 my-auto h-12 px-4 bg-red-500 hover:bg-red-600 text-white rounded-md"
+                onclick="removeFromCart({{ .Product.ID }})">Удалить</button>
+        </div>
+        {{ end }}
+        <div class="w-full p-4 rounded-lg text-right">
+            <h3 class="text-lg md:text-xl font-bold">Общая стоимость: <span id="total-amount">{{ printf "%.2f" .Total }} ₽</span></h3>
+            <button class="mt-4 px-6 py-2 bg-cyan-700 hover:bg-cyan-800 shadow-md text-white rounded-md"
+                onclick="checkout()">Оформить заказ</button>
+        </div>
+        {{ else }}
+        <p class="text-lg md:text-xl text-gray-600">Ваша корзина пуста.</p>
+        {{ end }}
+
+    </div>
+
+    <!-- Notification container -->
+    <div id="notification" class="fixed top-10 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md shadow-lg hidden"></div>
+</main>
+
+<script>
+    function removeFromCart(productID) {
+        fetch(`/cart/remove`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `product_id=${productID}`
+        }).then(response => {
+            if (response.ok) {
+                // Показ уведомления
+                showNotification("Товар удален из корзины");
+
+                // Удаление товара из DOM
+                document.getElementById(`product-${productID}`).remove();
+
+                // Обновление общей стоимости
+                updateTotal();
+            } else {
+                showNotification("Не удалось удалить товар", true);
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+            showNotification("Ошибка удаления товара", true);
+        });
+    }
+
+    function showNotification(message, error = false) {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `fixed top-10 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md shadow-lg ${error ? 'bg-red-500' : 'bg-green-500'} text-white`;
+        notification.classList.remove("hidden");
+
+        setTimeout(() => {
+            notification.classList.add("hidden");
+        }, 3000); // Удалить уведомление через 3 секунды
+    }
+
+    function updateTotal() {
+        let total = 0;
+        document.querySelectorAll('[id^="product-"]').forEach(product => {
+            const subTotal = parseFloat(product.querySelector('.text-lg.font-bold').textContent);
+            total += subTotal;
+        });
+        document.getElementById('total-amount').textContent = total.toFixed(2) + ' ₽';
+    }
+
+    function checkout() {
+        window.location.href = '/checkout';
+    }
+</script>
+
+{{ end }}

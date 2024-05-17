@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/static/output.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-200">
+    <div class="flex flex-col w-screen h-screen">
+        <!-- шапка -->
+        <div class="w-[70vw] h-1/6 mx-auto flex justify-between items-center px-10 shadow-xl border-[1px] border-gray-200 bg-white
+        rounded-xl mt-4">
+            <!-- лого -->
+            <a href="/" class="w-[30%] flex flex-row justify-center items-center gap-3">
+                <img src="/static/images/Logo.png" class="h-20 w-14">
+                <div class="flex flex-col">
+                    <p class="font-semibold text-2xl">Органик</p>
+                    <p class="font-normal pl-1 text-gray-500 text-sm">админ-панель</p>
+                </div>
+            </a>
+
+            <!-- инструменты -->
+            <div class="w-[70%] flex justify-end flex-row gap-8 pr-10">
+                <div class="relative select-none" id="dropdownButton">
+                    <!-- пользователи -->
+                    <div id="button" onclick="toggleDropdown()" class="border-solid rounded-xl shadow-md border-gray-300 bg-white border-[1px] w-[200px] py-3 cursor-pointer font-semibold 
+                flex justify-between mr-2 px-4">
+                        Пользователи
+                        <img width="10" src="/static/icon.svg">
+                    </div>
+
+                    <div id="dropdown" class="dropdown rounded-md shadow-lg border-gray-300 border-[1px] top-14 bg-white w-[200px]
+                font-medium absolute flex-col hidden">
+                        <div class="cursor-pointer p-4 hover:bg-gray-100 border-b-[1px] border-gray-300 w-full">
+                            <a class="grow" href="/admin/users/">Список пользователей</a>
+                        </div>
+                        <div href="admin/users/edit/"
+                            class="cursor-pointer border-b-[1px] border-gray-300 p-4 hover:bg-gray-100 w-full">Изменить
+                        </div>
+                        <div class="cursor-pointer p-4 hover:bg-gray-100 border-b-[1px] border-gray-300 w-full">Удалить
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative select-none" id="dropdownButton2">
+                    <!-- продукты -->
+                    <div id="button2" onclick="toggleDropdown2()" class="border-solid rounded-xl shadow-md border-gray-300 bg-white border-[1px] w-[200px] py-3 cursor-pointer font-semibold 
+                flex justify-between mr-2 px-4">
+                        Продукты
+                        <img width="10" src="/static/icon.svg">
+                    </div>
+
+                    <div id="dropdown2" class="dropdown rounded-md shadow-lg border-gray-300 border-[1px] top-14 bg-white w-[200px]
+                    font-medium absolute flex-col hidden">
+                        <div class="cursor-pointer p-4 hover:bg-gray-100 border-b-[1px] border-gray-300 w-full">
+                            <a href="/admin/products/">Список продуктов</a>
+                        </div>
+                        <div class="cursor-pointer p-4 hover:bg-gray-100 border-b-[1px] border-gray-300 w-full">
+                            <a href="/admin/products/add/">Добавить</a>
+                        </div>
+                        <div class="cursor-pointer p-4 hover:bg-gray-100 border-b-[1px] border-gray-300 w-full">Изменить
+                        </div>
+                        <div class="cursor-pointer p-4 hover:bg-gray-100 border-b-[1px] border-gray-300 w-full">Удалить
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function closeAllDropdowns(exceptId) {
+                    const dropdowns = document.querySelectorAll('.dropdown');
+                    dropdowns.forEach(dropdown => {
+                        if (!dropdown.classList.contains('hidden') && dropdown.id !== exceptId) {
+                            dropdown.classList.add('hidden');
+                        }
+                    });
+                }
+
+                function toggleDropdown() {
+                    const dropdown = document.querySelector('#dropdownButton #dropdown');
+                    if (dropdown.classList.contains('hidden')) {
+                        closeAllDropdowns(dropdown.id); // Закрыть все, кроме текущего
+                        dropdown.classList.remove('hidden');
+                    } else {
+                        dropdown.classList.add('hidden'); // Закрыть текущий
+                    }
+                }
+
+                function toggleDropdown2() {
+                    const dropdown = document.querySelector('#dropdownButton2 #dropdown2');
+                    if (dropdown.classList.contains('hidden')) {
+                        closeAllDropdowns(dropdown.id); // Закрыть все, кроме текущего
+                        dropdown.classList.remove('hidden');
+                    } else {
+                        dropdown.classList.add('hidden'); // Закрыть текущий
+                    }
+                }
+            </script>
+        </div>
+
+        <!-- контент -->
+        <div class="flex justify-center w-full h-5/6">
+            <div class="flex flex-col w-[70vw] mt-[30px] rounded-2xl bg-white shadow-2xl">
+                
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

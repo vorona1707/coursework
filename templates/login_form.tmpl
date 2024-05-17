@@ -1,0 +1,57 @@
+{{ define "login_form" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/output.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/images/Logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50">
+
+    {{ template "header" . }}
+
+    <main class="flex-grow flex items-center justify-center">
+        <div class="fade-in w-full max-w-lg p-8 shadow-xl rounded-xl bg-white mx-4">
+            <h1 class="text-3xl font-semibold text-center mb-12">Авторизация</h1>
+            {{ if .Error }}
+            <div class="mb-4 text-red-500 font-bold text-center">
+                Неправильный email или пароль.
+            </div>
+            {{ end }}
+            <form action="/login/ok/" method="POST" class="flex flex-col gap-6">
+                <input type="email" name="email" placeholder="Email" class="h-14 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-cyan-700">
+                <input type="password" name="password" placeholder="Пароль" class="h-14 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-cyan-700">
+                <button type="submit" class="h-14 bg-cyan-700 text-white font-bold rounded-md shadow-md hover:bg-cyan-800 transition-colors duration-300">Войти</button>
+            </form>
+            <div class="flex justify-center mt-8">
+                <p class="text-md">Нет аккаунта?</p>
+                <a href="/register/" class="pl-2 text-md font-bold text-blue-600 underline">Регистрация</a>
+            </div>
+        </div>
+    </main>
+
+    {{ template "footer" . }}
+
+</body>
+</html>
+{{ end }}

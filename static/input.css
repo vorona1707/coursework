@@ -18,7 +18,30 @@
   background-image: url(/static/images/banner.jpg);
 }
 
+.button-color{
+  background-color: #7eb593;
+}
+
 .shop-bg{
   background-image: url(/static/images/shop-bg.png);
-
+  display: absolute;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
+
+#catalog-fruit-bg {
+  animation-name: catalogUp;
+  animation-duration: 500ms;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html {
+  overflow-y: scroll;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+

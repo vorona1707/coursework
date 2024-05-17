@@ -1,0 +1,45 @@
+{{ define "edit_article" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование статьи</title>
+    <link href="/static/output.css" rel="stylesheet">
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center">
+    {{ template "header" . }}
+
+    <section class="w-full flex flex-col items-center mt-8 min-h-screen">
+        <h1 class="text-2xl md:text-3xl font-bold mb-4">Редактирование статьи</h1>
+        <form action="/admin/articles/{{ .Article.ID }}/update" method="POST" class="w-11/12 md:w-3/4 lg:w-1/2 flex flex-col items-center gap-4">
+            <input type="hidden" name="id" value="{{ .Article.ID }}">
+            
+            <label for="title" class="w-full text-sm md:text-base font-medium">Заголовок</label>
+            <input type="text" id="title" name="title" class="w-full p-2 rounded-md border" value="{{ .Article.Title }}" required>
+
+            <label for="content" class="w-full text-sm md:text-base font-medium" id="content-label">Содержание</label>
+            <textarea id="content" name="content" class="w-full p-2 rounded-md border" required>{{ .Article.Content }}</textarea>
+
+            <label for="author" class="w-full text-sm md:text-base font-medium">Автор</label>
+            <input type="text" id="author" name="author" class="w-full p-2 rounded-md border" value="{{ .Article.Author }}" required>
+
+            <label for="published_at" class="w-full text-sm md:text-base font-medium">Дата публикации</label>
+            <input type="datetime-local" id="published_at" name="published_at" class="w-full p-2 rounded-md border"
+                   value="{{ .Article.PublishedAt.Format "2006-01-02T15:04:05" }}" required>
+
+            <button type="submit" class="mt-4 px-6 py-2 bg-cyan-700 hover:bg-cyan-800 text-white rounded-md">Сохранить</button>
+        </form>
+    </section>
+
+    <script>
+        document.getElementById('content').addEventListener('input', function() {
+            const label = document.getElementById('content-label');
+            const textLength = this.value.length;
+            label.textContent = `Содержание${textLength ? ' (' + textLength + ')' : ''}`;
+        });
+    </script>
+
+    {{ template "footer" . }}
+</body>
+</html>
+{{ end }}
